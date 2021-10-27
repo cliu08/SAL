@@ -22,7 +22,7 @@ from tqdm import tqdm
 import config
 from data import MNISTM
 from models import Net
-from utils import GrayscaleToRgb, GradientReversal
+#from utils import GrayscaleToRgb, GradientReversal
 
 from ..SAL import sal
 

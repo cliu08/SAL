@@ -30,6 +30,8 @@ from ..SAL import sal
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
+from mmd_loss import MMD_loss  # todos !!!!
+'''
 def MMD_loss(features_source_x, features_target_x):
 
     # compute the mmd loss
@@ -37,6 +39,8 @@ def MMD_loss(features_source_x, features_target_x):
 
 
     return mmd_loss
+'''
+
 
 def main(args):
     model = Net().to(device)
@@ -93,7 +97,7 @@ def main(args):
                 # for fixed weight
                 loss = label_loss + mmd_loss
                 # for SALM
-                #  stoalm_dict, parameters for salm  @!!!!! --- todos
+                #  stoalm_dict, parameters for salm  !!!!! --- todos
                 loss_dict = {'ce':label_loss, 'mmd':mmd_loss}
                 stoalm_dict, loss_dict = sal(stoalm_dict, loss_dict)
                 loss = loss_dict['ce'] + loss_dict['mmd']
@@ -101,7 +105,7 @@ def main(args):
                 optim.zero_grad()
                 loss.backward()
                 optim.step()
-
+        #  !!!! todos !!!
         tqdm.write(f'EPOCH {epoch:03d}: domain_loss={mean_loss:.4f}, '
                    f'source_accuracy={mean_accuracy:.4f}')
 

@@ -42,7 +42,44 @@ def MMD_loss(features_source_x, features_target_x):
 '''
 
 
+import config
+
+class ComparisonConfig(config.DomainAdaptConfig):
+    """ Configuration for the comparison study
+    """
+
+    _algorithms = ['adv', 'vada', 'dann', 'assoc', 'coral', 'teach','mmd','stoalm']
+    _algo_names = [
+        "Adversarial Domain Regularization",
+        "Virtual Adversarial Domain Adaptation",
+        "Domain Adversarial Training",
+        "Associative Domain Adaptation",
+        "Deep Correlation Alignment",
+        "Self-Ensembling",
+        "MMD",
+        "Sto_ALM"
+    ]
+
+    def _init(self):
+        super()._init()
+        self.add_argument('--seed', default=1234, type=int, help="Random Seed")
+        self.add_argument('--print', action='store_true')
+        self.add_argument('--null', action='store_true')
+
+        for arg, name in zip(self._algorithms, self._algo_names):
+            self.add_argument('--{}'.format(arg), action='store_true', help="Train a model with {}".format(name))
+#            print(name)
+
+
 def main(args):
+
+    stoalm_dict = {'lamb': [args.lamb], 'rho':[args.rho], 'bv':[], 'add_loss_func':[],\
+                    'epsilon': args.epsilon, 'sigma':args.sigma, 'sigma_ls':[], \
+                    'lamb_max':args.lamb_max, 'tau':args.tau, 'gamma':args.gamma,\
+                    'fix_weight':args.fix_weight, 'loss_func_weight':args.loss_func_weight,\
+                    'stoalm_optim':args.stoalm_optim.lower()}
+
+
     model = Net().to(device)
     model.load_state_dict(torch.load(args.MODEL_FILE))
     feature_extractor = model.feature_extractor
@@ -113,9 +150,9 @@ def main(args):
 
 
 if __name__ == '__main__':
-    arg_parser = argparse.ArgumentParser(description='Domain adaptation using RevGrad')
-    arg_parser.add_argument('MODEL_FILE', help='A model in trained_models')
-    arg_parser.add_argument('--batch-size', type=int, default=64)
-    arg_parser.add_argument('--epochs', type=int, default=15)
-    args = arg_parser.parse_args()
+    parser = ComparisonConfig('demo fos salm')
+    args = parser.parse_args()
+    print(args)
+
+
     main(args)

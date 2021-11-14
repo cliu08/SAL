@@ -1,0 +1,9 @@
+colorama==0.4.4
+numpy==1.21.4
+Pillow==8.4.0
+scipy==1.7.2
+torch==1.10.0
+torch-salad==0.2.1a0
+torchvision==0.11.1
+tqdm==4.62.3
+typing-extensions==3.10.0.2
